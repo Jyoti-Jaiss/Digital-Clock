@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    background-color: black;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+
+  .clock {
+    text-align: center;
+    color: white;
+  }
+
+  h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  #time {
+    font-size: 72px;
+    margin-bottom: 20px;
+  }
+
+  #showdate {
+    font-size: 24px;
+  }
+
+  button {
+    font-size: 18px;
+    margin: 10px;
+    padding: 8px 16px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #ddd;
+  }
+</style>
+</head>
+<body>
+<div class="clock">
+  <h2>Digital Clock</h2>
+  <div id="time"></div>
+  <div id="showdate"></div>
+  <button id="startBtn">Start</button>
+  <button id="stopBtn">Stop</button>
+</div>
+<script>
+  const timeElement = document.getElementById('time');
+  const dateElement = document.getElementById('showdate');
+  const startButton = document.getElementById('startBtn');
+  const stopButton = document.getElementById('stopBtn');
+  let intervalId;
+
+  function updateClock() {
+    const date = new Date();
+    const timeString = `${formatTimeComponent(date.getHours())}:${formatTimeComponent(date.getMinutes())}:${formatTimeComponent(date.getSeconds())}`;
+    const dateString = `${formatTimeComponent(date.getDate())}/${formatTimeComponent(date.getMonth() + 1)}/${date.getFullYear()}`;
+    
+    timeElement.textContent = timeString;
+    dateElement.textContent = dateString;
+  }
+
+  function formatTimeComponent(time) {
+    return time.toString().padStart(2, '0');
+  }
+
+  startButton.addEventListener('click', () => {
+    if (!intervalId) {
+      intervalId = setInterval(updateClock, 1000);
+      startButton.disabled = true;
+      stopButton.disabled = false;
+    }
+  });
+
+  stopButton.addEventListener('click', () => {
+    clearInterval(intervalId);
+    intervalId = null;
+    startButton.disabled = false;
+    stopButton.disabled = true;
+  });
+
+  updateClock();
+</script>
+</body>
+</html>
